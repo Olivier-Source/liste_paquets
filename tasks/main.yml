@@ -1,0 +1,9 @@
+- name: Récupérer la liste des paquets installés ( Uniquement sur Debian... )
+  ansible.builtin.command: dpkg-query -W -f='${binary:Package}\n'
+  register: result_dpkg
+  when: ansible_os_family == "Debian"
+
+- name: Enregistrer la liste des paquets dans la variable "paquets"
+  ansible.builtin.set_fact:
+    paquets: "{{ result_dpkg.stdout_lines }}"
+  when: ansible_os_family == "Debian"
